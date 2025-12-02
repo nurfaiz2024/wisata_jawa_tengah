@@ -322,14 +322,27 @@ function closeThePopup(){
   popup.setAttribute('aria-hidden','true');
 }
 closePopup.addEventListener('click', closeThePopup);
-popup.addEventListener('click', (e)=>{ if(e.target===popup) closeThePopup(); });
 
-/* Clicking main card opens popup (but we will stopPropagation on suka button) */
-document.querySelectorAll('#wisataList .card').forEach(card=>{
-  card.addEventListener('click', ()=>{
-    openPopup(card.getAttribute('data-img'), card.getAttribute('data-title'), card.getAttribute('data-desc'));
+popup.addEventListener('click', (e)=>{
+  if(e.target === popup){
+    closeThePopup();
+  }
+});
+
+/* ----------------- BUKA DETAIL SAAT CARD DIKLIK ----------------- */
+mainCards.forEach(card=>{
+  card.addEventListener('click', (e)=>{
+    // hindari tombol "suka" agar tidak memicu popup
+    if(e.target.classList.contains('suka-btn')) return;
+
+    const img = card.getAttribute('data-img');
+    const title = card.getAttribute('data-title');
+    const desc = card.getAttribute('data-desc');
+
+    openPopup(img, title, desc);
   });
 });
+
 
 /* ----------------- FAVORIT (SUKA / BATAL SUKA) ----------------- */
 const favListEl = document.getElementById('favList');
